@@ -1,86 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSGDesign | Pusat Percetakan, Sablon & Jersey Premium Purwodadi,Indonesia</title>
-    
-    <!-- Framework & Fonts -->
+    <title>MSGDesign | Pusat Percetakan, Sablon & Jersey Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #0f172a;
-        }
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            scroll-behavior: smooth;
-            background-color: #f8fafc;
-        }
+        :root { --primary: #2563eb; --secondary: #0f172a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
         .page { display: none; }
         .page.active { display: block; animation: pageTransition 0.5s ease-out; }
-        
         @keyframes pageTransition {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Hero Background */
         .hero-section {
-            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), 
+            background: linear-gradient(rgba(15,23,42,0.75), rgba(15,23,42,0.85)),
                         url('https://images.unsplash.com/photo-1626497748470-281920360f15?auto=format&fit=crop&q=80&w=1600');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             height: 100vh;
+            transition: background-image 0.5s ease;
         }
-
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255,255,255,0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             transition: all 0.3s ease;
         }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .card-hover:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgb(0 0 0/0.1),0 8px 10px -6px rgb(0 0 0/0.1); }
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:rgba(255,255,255,0.1); transform:rotate(45deg); transition:0.5s; }
+        .btn-shine:hover::after { left:120%; }
+        .scroll-down { animation: bounce 2s infinite; }
+        @keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-10px);} 60%{transform:translateY(-5px);} }
 
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-hover:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
-
-        .btn-shine {
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-shine::after {
-            content: '';
+        /* Upload Button Floating */
+        #uploadBtn {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(45deg);
-            transition: 0.5s;
+            bottom: 24px;
+            right: 24px;
+            z-index: 20;
+            background: rgba(255,255,255,0.15);
+            border: 2px dashed rgba(255,255,255,0.5);
+            color: white;
+            border-radius: 16px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s;
         }
-        .btn-shine:hover::after {
-            left: 120%;
+        #uploadBtn:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: white;
+            transform: scale(1.05);
         }
+        #bgFileInput { display: none; }
 
-        .scroll-down {
-            animation: bounce 2s infinite;
+        /* Upload indicator */
+        .upload-indicator {
+            position: absolute;
+            top: 90px;
+            right: 24px;
+            z-index: 20;
+            background: rgba(22,163,74,0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
         }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(-8px);} to{opacity:1;transform:translateY(0);} }
     </style>
 </head>
 <body class="antialiased">
@@ -94,7 +98,6 @@
                 </div>
                 <span class="text-2xl font-extrabold tracking-tighter text-slate-900">MSG<span class="text-blue-600">DESIGN</span></span>
             </div>
-            
             <div class="hidden md:flex items-center space-x-10">
                 <button onclick="showPage('home')" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition">Beranda</button>
                 <div class="group relative">
@@ -109,10 +112,7 @@
                 <button onclick="showPage('contact')" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition">Kontak Kami</button>
                 <button onclick="scrollToSection('contact-form')" class="px-7 py-3 bg-blue-600 text-white rounded-full text-sm font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100 btn-shine">Mulai Konsultasi</button>
             </div>
-
-            <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-900">
-                <i data-lucide="menu"></i>
-            </button>
+            <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-900"><i data-lucide="menu"></i></button>
         </div>
     </nav>
 
@@ -128,13 +128,25 @@
         </div>
     </div>
 
-    <!-- 1. HOME PAGE -->
+    <!-- HOME PAGE -->
     <main id="home" class="page active">
         <!-- Hero Section -->
-        <section class="hero-section relative flex items-center justify-center px-6 overflow-hidden">
+        <section id="heroSection" class="hero-section relative flex items-center justify-center px-6 overflow-hidden">
+
+            <!-- Upload Indicator -->
+            <div id="uploadIndicator" class="upload-indicator">
+                <i data-lucide="check-circle" class="w-4 h-4"></i> Gambar berhasil diupload!
+            </div>
+
+            <!-- Upload Button -->
+            <button id="uploadBtn" onclick="document.getElementById('bgFileInput').click()">
+                <i data-lucide="image-plus" class="w-4 h-4"></i> Ganti Background
+            </button>
+            <input type="file" id="bgFileInput" accept="image/*">
+
             <div class="relative z-10 max-w-5xl text-center">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-300 text-xs font-bold tracking-widest uppercase">
-                    <span class="w-2 h-2 bg-blue-400 rounded-full animate-ping"></span> Percetakan Kreatif Terbaik di Jakarta
+                    <span class="w-2 h-2 bg-blue-400 rounded-full animate-ping"></span> Percetakan Kreatif Terbaik di Purwodadi
                 </div>
                 <h1 class="text-5xl md:text-8xl font-black text-white leading-[1.1] mb-8 tracking-tighter">
                     Konsultasikan Desain <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Terbaik Anda</span>
@@ -171,38 +183,30 @@
                     <div>
                         <h4 class="text-blue-600 font-extrabold text-sm uppercase tracking-[0.3em] mb-4">Profil Perusahaan</h4>
                         <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">Mewujudkan Standar Baru dalam <span class="text-blue-600">Percetakan Digital</span></h2>
-                        <p class="text-slate-600 text-lg mb-8 leading-relaxed">
-                            MSGDesign bukan sekadar tempat sablon. Kami adalah mitra strategis untuk branding Anda. Menggunakan teknologi mesin terbaru dari Jepang dan tinta original, kami memastikan setiap detail desain Anda tercetak dengan sempurna.
-                        </p>
+                        <p class="text-slate-600 text-lg mb-8 leading-relaxed">MSGDesign bukan sekadar tempat sablon. Kami adalah mitra strategis untuk branding Anda. Menggunakan teknologi mesin terbaru dan tinta original, kami memastikan setiap detail desain Anda tercetak dengan sempurna.</p>
                         <div class="grid sm:grid-cols-2 gap-8 mb-10">
                             <div class="flex gap-4">
-                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0">
-                                    <i data-lucide="shield-check"></i>
-                                </div>
+                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0"><i data-lucide="shield-check"></i></div>
                                 <div>
                                     <h5 class="font-bold text-slate-900 mb-1">Kualitas Garansi</h5>
                                     <p class="text-sm text-slate-500">Hasil tidak sesuai? Kami ganti baru tanpa ribet.</p>
                                 </div>
                             </div>
                             <div class="flex gap-4">
-                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0">
-                                    <i data-lucide="clock"></i>
-                                </div>
+                                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0"><i data-lucide="clock"></i></div>
                                 <div>
                                     <h5 class="font-bold text-slate-900 mb-1">Tepat Waktu</h5>
                                     <p class="text-sm text-slate-500">Sistem manajemen produksi yang terukur ketat.</p>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="scrollToSection('contact-form')" class="text-blue-600 font-bold flex items-center gap-2 hover:gap-4 transition-all">
-                            Hubungi Admin Produksi <i data-lucide="chevron-right"></i>
-                        </button>
+                        <button onclick="scrollToSection('contact-form')" class="text-blue-600 font-bold flex items-center gap-2 hover:gap-4 transition-all">Hubungi Admin Produksi <i data-lucide="chevron-right"></i></button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Services Preview Section -->
+        <!-- Services -->
         <section class="py-24 bg-slate-50 px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-20">
@@ -210,20 +214,14 @@
                     <p class="text-slate-500 max-w-2xl mx-auto">Kami fokus pada pilar utama produksi untuk memberikan hasil yang paling maksimal di setiap bidangnya.</p>
                 </div>
                 <div class="grid md:grid-cols-2 gap-10">
-                    <!-- Sablon -->
                     <div class="bg-white p-10 rounded-[2.5rem] shadow-sm card-hover border border-slate-100">
-                        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-blue-100">
-                            <i data-lucide="shirt" class="w-8 h-8"></i>
-                        </div>
+                        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-blue-100"><i data-lucide="shirt" class="w-8 h-8"></i></div>
                         <h3 class="text-2xl font-black mb-4">Sablon Kaos</h3>
                         <p class="text-slate-500 mb-8 leading-relaxed text-sm">Cetak kaos distro premium menggunakan teknik DTF atau Plastisol. Tekstur lembut dan tahan cuci.</p>
                         <button onclick="showPage('sablon')" class="w-full py-4 bg-slate-50 text-blue-600 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition">Detail Sablon</button>
                     </div>
-                    <!-- Jersey -->
                     <div class="bg-white p-10 rounded-[2.5rem] shadow-sm card-hover border border-slate-100">
-                        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-indigo-100">
-                            <i data-lucide="flag" class="w-8 h-8"></i>
-                        </div>
+                        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-indigo-100"><i data-lucide="flag" class="w-8 h-8"></i></div>
                         <h3 class="text-2xl font-black mb-4">Jersey Custom</h3>
                         <p class="text-slate-500 mb-8 leading-relaxed text-sm">Full sublimasi dengan desain tanpa batas warna. Sangat cocok untuk tim esport, futsal, dan lari.</p>
                         <button onclick="showPage('jersey')" class="w-full py-4 bg-slate-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">Detail Jersey</button>
@@ -232,112 +230,57 @@
             </div>
         </section>
 
-        <!-- Process Workflow -->
+        <!-- Process -->
         <section class="py-24 bg-slate-900 text-white px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-20">
                     <h2 class="text-4xl font-black mb-6">Cara Pemesanan</h2>
                     <p class="text-slate-400">Proses yang transparan dan mudah tanpa harus datang ke workshop.</p>
                 </div>
-                <div class="grid md:grid-cols-4 gap-8 relative">
-                    <div class="text-center">
-                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">1</div>
-                        <h4 class="text-lg font-bold mb-2">Konsultasi</h4>
-                        <p class="text-slate-400 text-sm">Kirim desain atau ide Anda via WhatsApp.</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">2</div>
-                        <h4 class="text-lg font-bold mb-2">DP & Mockup</h4>
-                        <p class="text-slate-400 text-sm">Kami buatkan preview desain sebelum cetak.</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">3</div>
-                        <h4 class="text-lg font-bold mb-2">Produksi</h4>
-                        <p class="text-slate-400 text-sm">Proses cetak dengan standar QC ketat.</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">4</div>
-                        <h4 class="text-lg font-bold mb-2">Pengiriman</h4>
-                        <p class="text-slate-400 text-sm">Pelunasan dan paket dikirim ke alamat Anda.</p>
-                    </div>
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="text-center"><div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">1</div><h4 class="text-lg font-bold mb-2">Konsultasi</h4><p class="text-slate-400 text-sm">Kirim desain atau ide Anda via WhatsApp.</p></div>
+                    <div class="text-center"><div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">2</div><h4 class="text-lg font-bold mb-2">DP & Mockup</h4><p class="text-slate-400 text-sm">Kami buatkan preview desain sebelum cetak.</p></div>
+                    <div class="text-center"><div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">3</div><h4 class="text-lg font-bold mb-2">Produksi</h4><p class="text-slate-400 text-sm">Proses cetak dengan standar QC ketat.</p></div>
+                    <div class="text-center"><div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-3xl font-black mx-auto mb-6">4</div><h4 class="text-lg font-bold mb-2">Pengiriman</h4><p class="text-slate-400 text-sm">Pelunasan dan paket dikirim ke alamat Anda.</p></div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 2. SABLON PAGE -->
+    <!-- SABLON PAGE -->
     <main id="sablon" class="page pt-32 pb-24 px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row gap-4 items-center mb-16">
                 <div class="w-16 h-1 bg-blue-600 rounded-full"></div>
                 <h1 class="text-5xl font-black text-slate-900 tracking-tight">Sablon Kaos Distro</h1>
             </div>
-
             <div class="grid lg:grid-cols-2 gap-20 items-center mb-32">
                 <div class="relative">
                     <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] shadow-2xl" alt="Layanan Sablon">
-                    <div class="absolute -top-6 -left-6 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center p-4 text-center font-black rotate-12 shadow-xl">
-                        TANPA MINIMAL ORDER
-                    </div>
+                    <div class="absolute -top-6 -left-6 w-32 h-32 bg-yellow-400 rounded-full flex items-center justify-center p-4 text-center font-black rotate-12 shadow-xl text-sm">TANPA MINIMAL ORDER</div>
                 </div>
                 <div>
                     <h2 class="text-3xl font-black mb-6">Teknologi Sablon Digital (DTF)</h2>
-                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">
-                        Kami menggunakan mesin DTF Large Format untuk menjamin kestabilan warna. Hasil sablon memiliki kelenturan tinggi, warna yang sangat solid, dan detail yang tajam hingga font terkecil sekalipun.
-                    </p>
+                    <p class="text-slate-600 text-lg mb-8 leading-relaxed">Kami menggunakan mesin DTF Large Format untuk menjamin kestabilan warna. Hasil sablon memiliki kelenturan tinggi, warna yang sangat solid, dan detail yang tajam.</p>
                     <div class="space-y-6 mb-10">
-                        <div class="flex items-start gap-4">
-                            <div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i data-lucide="check" class="w-4 h-4"></i>
-                            </div>
-                            <p class="text-slate-700 font-medium">Bahan Cotton Combed 30s/24s Reaktif (Kualitas Premium).</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i data-lucide="check" class="w-4 h-4"></i>
-                            </div>
-                            <p class="text-slate-700 font-medium">Tinta Original Ink (Aman untuk kulit & lingkungan).</p>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                <i data-lucide="check" class="w-4 h-4"></i>
-                            </div>
-                            <p class="text-slate-700 font-medium">Pengerjaan Kilat 1-3 Hari Kerja.</p>
-                        </div>
+                        <div class="flex items-start gap-4"><div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="check" class="w-4 h-4"></i></div><p class="text-slate-700 font-medium">Bahan Cotton Combed 30s/24s Reaktif (Kualitas Premium).</p></div>
+                        <div class="flex items-start gap-4"><div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="check" class="w-4 h-4"></i></div><p class="text-slate-700 font-medium">Tinta Original Ink (Aman untuk kulit & lingkungan).</p></div>
+                        <div class="flex items-start gap-4"><div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="check" class="w-4 h-4"></i></div><p class="text-slate-700 font-medium">Pengerjaan Kilat 1-3 Hari Kerja.</p></div>
                     </div>
                     <button onclick="scrollToSection('contact-form')" class="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-blue-700 transition">Pesan Kaos Sekarang</button>
                 </div>
             </div>
-
-            <!-- Price Table for Sablon -->
             <div class="bg-slate-900 rounded-[3rem] p-12 text-white overflow-hidden relative">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px]"></div>
                 <h3 class="text-3xl font-black mb-10 text-center">Estimasi Harga Sablon + Kaos</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead class="text-slate-400 text-xs uppercase tracking-[0.2em]">
-                            <tr>
-                                <th class="pb-6 border-b border-slate-800">Kuantitas</th>
-                                <th class="pb-6 border-b border-slate-800">Bahan 30s + DTF A3</th>
-                                <th class="pb-6 border-b border-slate-800">Waktu Produksi</th>
-                            </tr>
+                            <tr><th class="pb-6 border-b border-slate-800">Kuantitas</th><th class="pb-6 border-b border-slate-800">Bahan 30s + DTF A3</th><th class="pb-6 border-b border-slate-800">Waktu Produksi</th></tr>
                         </thead>
                         <tbody class="text-lg">
-                            <tr>
-                                <td class="py-6 border-b border-slate-800">Satuan (1 Pcs)</td>
-                                <td class="py-6 border-b border-slate-800 font-black text-blue-400">Rp 85.000</td>
-                                <td class="py-6 border-b border-slate-800">1 Hari</td>
-                            </tr>
-                            <tr>
-                                <td class="py-6 border-b border-slate-800">Lusinan (12+ Pcs)</td>
-                                <td class="py-6 border-b border-slate-800 font-black text-blue-400">Rp 65.000</td>
-                                <td class="py-6 border-b border-slate-800">3-5 Hari</td>
-                            </tr>
-                            <tr>
-                                <td class="py-6 border-b border-slate-800">Partai (50+ Pcs)</td>
-                                <td class="py-6 border-b border-slate-800 font-black text-blue-400">Hubungi Kami</td>
-                                <td class="py-6 border-b border-slate-800">7-10 Hari</td>
-                            </tr>
+                            <tr><td class="py-6 border-b border-slate-800">Satuan (1 Pcs)</td><td class="py-6 border-b border-slate-800 font-black text-blue-400">Rp 85.000</td><td class="py-6 border-b border-slate-800">1 Hari</td></tr>
+                            <tr><td class="py-6 border-b border-slate-800">Lusinan (12+ Pcs)</td><td class="py-6 border-b border-slate-800 font-black text-blue-400">Rp 65.000</td><td class="py-6 border-b border-slate-800">3-5 Hari</td></tr>
+                            <tr><td class="py-6 border-b border-slate-800">Partai (50+ Pcs)</td><td class="py-6 border-b border-slate-800 font-black text-blue-400">Hubungi Kami</td><td class="py-6 border-b border-slate-800">7-10 Hari</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -345,131 +288,79 @@
         </div>
     </main>
 
-    <!-- 3. JERSEY PAGE -->
+    <!-- JERSEY PAGE -->
     <main id="jersey" class="page pt-32 pb-24 px-6 bg-slate-50">
         <div class="max-w-7xl mx-auto">
             <div class="text-center max-w-3xl mx-auto mb-20">
                 <h1 class="text-5xl font-black text-slate-900 mb-6">Jersey Custom Profesional</h1>
-                <p class="text-slate-500 text-lg">Wujudkan performa maksimal tim Anda dengan jersey yang menggunakan teknologi sublimasi tercanggih.</p>
+                <p class="text-slate-500 text-lg">Wujudkan performa maksimal tim Anda dengan jersey teknologi sublimasi tercanggih.</p>
             </div>
-
             <div class="grid md:grid-cols-2 gap-10 mb-20">
                 <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100 flex flex-col items-center text-center">
                     <img src="https://images.unsplash.com/photo-1574634534894-89d7576c8259?auto=format&fit=crop&q=80&w=400" class="w-48 h-48 rounded-full object-cover mb-8 shadow-xl" alt="Jersey Milano">
                     <h3 class="text-2xl font-black mb-4">Dryfit Milano</h3>
-                    <p class="text-slate-500 mb-8 text-sm leading-relaxed">Tekstur kain berbentuk zigzag yang elegan. Sangat lembut, cepat kering (moisture-wicking), dan ringan.</p>
+                    <p class="text-slate-500 mb-8 text-sm leading-relaxed">Tekstur kain berbentuk zigzag yang elegan. Sangat lembut, cepat kering, dan ringan.</p>
                     <div class="mt-auto w-full pt-6 border-t border-slate-50 font-black text-blue-600 text-xl">IDR 125.000 / Pcs</div>
                 </div>
                 <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100 flex flex-col items-center text-center">
                     <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80&w=400" class="w-48 h-48 rounded-full object-cover mb-8 shadow-xl" alt="Jersey Brazil">
                     <h3 class="text-2xl font-black mb-4">Dryfit Brazil</h3>
-                    <p class="text-slate-500 mb-8 text-sm leading-relaxed">Memiliki pori-pori halus untuk sirkulasi udara maksimal. Sangat elastis dan biasa digunakan untuk sepakbola pro.</p>
+                    <p class="text-slate-500 mb-8 text-sm leading-relaxed">Pori-pori halus untuk sirkulasi udara maksimal. Sangat elastis untuk sepakbola pro.</p>
                     <div class="mt-auto w-full pt-6 border-t border-slate-50 font-black text-blue-600 text-xl">IDR 135.000 / Pcs</div>
                 </div>
             </div>
-
             <div class="bg-blue-600 rounded-[3.5rem] p-12 md:p-20 text-white text-center">
                 <h2 class="text-3xl md:text-4xl font-black mb-8">Teknologi Full Sublimasi</h2>
-                <p class="text-blue-100 text-lg max-w-4xl mx-auto mb-12">
-                    Berbeda dengan sablon biasa, tinta sublimasi menyatu dengan serat kain pada suhu 200°C. Hasilnya? Warna tidak akan pernah luntur, retak, atau mengelupas seumur hidup.
-                </p>
+                <p class="text-blue-100 text-lg max-w-4xl mx-auto mb-12">Tinta sublimasi menyatu dengan serat kain pada suhu 200°C. Hasilnya? Warna tidak akan pernah luntur, retak, atau mengelupas seumur hidup.</p>
                 <div class="flex flex-wrap justify-center gap-10">
-                    <div class="flex flex-col items-center">
-                        <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="palette"></i></div>
-                        <span class="font-bold">Warna Bebas</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="wind"></i></div>
-                        <span class="font-bold">Breathable</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="refresh-cw"></i></div>
-                        <span class="font-bold">Awet Selamanya</span>
-                    </div>
+                    <div class="flex flex-col items-center"><div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="palette"></i></div><span class="font-bold">Warna Bebas</span></div>
+                    <div class="flex flex-col items-center"><div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="wind"></i></div><span class="font-bold">Breathable</span></div>
+                    <div class="flex flex-col items-center"><div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="refresh-cw"></i></div><span class="font-bold">Awet Selamanya</span></div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- 4. CONTACT PAGE -->
+    <!-- CONTACT PAGE -->
     <main id="contact" class="page pt-32 pb-24 px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-20">
                 <h1 class="text-5xl font-black text-slate-900 mb-6 tracking-tight">Hubungi Kami</h1>
                 <p class="text-slate-500 text-xl max-w-2xl mx-auto">Kami siap melayani Anda melalui berbagai saluran komunikasi resmi di bawah ini.</p>
             </div>
-
             <div class="grid lg:grid-cols-3 gap-8 mb-24">
-                <!-- WhatsApp -->
                 <a href="https://wa.me/6281234567890" target="_blank" class="p-10 bg-green-50 rounded-[2.5rem] border border-green-100 group transition hover:bg-green-600 shadow-sm">
-                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-green-600 mb-8 group-hover:scale-110 transition duration-500">
-                        <i data-lucide="message-circle" class="w-8 h-8 fill-current"></i>
-                    </div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-green-600 mb-8 group-hover:scale-110 transition duration-500"><i data-lucide="message-circle" class="w-8 h-8"></i></div>
                     <h3 class="text-2xl font-black mb-4 text-green-900 group-hover:text-white transition">WhatsApp</h3>
                     <p class="text-green-700/70 mb-6 group-hover:text-white/80 transition text-sm">Respon cepat untuk konsultasi harga, stok bahan, dan update produksi.</p>
                     <span class="text-green-600 font-extrabold group-hover:text-white transition flex items-center gap-2">Chat Sekarang <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
                 </a>
-
-                <!-- Instagram -->
                 <a href="https://instagram.com/msgdesign.id" target="_blank" class="p-10 bg-pink-50 rounded-[2.5rem] border border-pink-100 group transition hover:bg-gradient-to-tr hover:from-purple-600 hover:to-pink-500 shadow-sm">
-                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-pink-600 mb-8 group-hover:scale-110 transition duration-500">
-                        <i data-lucide="instagram" class="w-8 h-8"></i>
-                    </div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-pink-600 mb-8 group-hover:scale-110 transition duration-500"><i data-lucide="instagram" class="w-8 h-8"></i></div>
                     <h3 class="text-2xl font-black mb-4 text-pink-900 group-hover:text-white transition">Instagram</h3>
                     <p class="text-pink-700/70 mb-6 group-hover:text-white/80 transition text-sm">Lihat portofolio hasil cetakan terbaru dan katalog desain eksklusif kami.</p>
                     <span class="text-pink-600 font-extrabold group-hover:text-white transition flex items-center gap-2">Follow Us <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
                 </a>
-
-                <!-- TikTok -->
                 <a href="https://tiktok.com/@msgdesign.id" target="_blank" class="p-10 bg-slate-50 rounded-[2.5rem] border border-slate-200 group transition hover:bg-black shadow-sm">
-                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-black mb-8 group-hover:scale-110 transition duration-500">
-                        <i data-lucide="music-2" class="w-8 h-8"></i>
-                    </div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-black mb-8 group-hover:scale-110 transition duration-500"><i data-lucide="music-2" class="w-8 h-8"></i></div>
                     <h3 class="text-2xl font-black mb-4 text-slate-900 group-hover:text-white transition">TikTok</h3>
                     <p class="text-slate-600 mb-6 group-hover:text-white/80 transition text-sm">Konten proses produksi di workshop dan tips seputar dunia percetakan.</p>
                     <span class="text-slate-900 font-extrabold group-hover:text-white transition flex items-center gap-2">Tonton Video <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
                 </a>
             </div>
-
             <div class="grid lg:grid-cols-2 gap-12 items-start">
                 <div class="bg-slate-50 p-10 md:p-14 rounded-[3rem]">
                     <h2 class="text-3xl font-black mb-8">Informasi Kantor</h2>
                     <div class="space-y-8">
-                        <div class="flex gap-6">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm">
-                                <i data-lucide="map-pin"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 mb-1">Alamat Workshop</h4>
-                                <p class="text-slate-500 text-sm leading-relaxed">Jl. Kebayoran Baru No. 123, Blok M, Kebayoran Baru, Jakarta Selatan, 12130.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm">
-                                <i data-lucide="mail"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 mb-1">Email Support</h4>
-                                <p class="text-slate-500 text-sm">order@msgdesign.id<br>hi@msgdesign.id</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm">
-                                <i data-lucide="clock"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 mb-1">Jam Operasional</h4>
-                                <p class="text-slate-500 text-sm">Senin - Jumat: 09:00 - 18:00<br>Sabtu: 09:00 - 15:00<br>Minggu & Libur Nasional: Tutup</p>
-                            </div>
-                        </div>
+                        <div class="flex gap-6"><div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm"><i data-lucide="map-pin"></i></div><div><h4 class="font-bold text-slate-900 mb-1">Alamat Workshop</h4><p class="text-slate-500 text-sm leading-relaxed">Purwodadi, Grobogan, Jawa Tengah, Indonesia.</p></div></div>
+                        <div class="flex gap-6"><div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm"><i data-lucide="mail"></i></div><div><h4 class="font-bold text-slate-900 mb-1">Email Support</h4><p class="text-slate-500 text-sm">order@msgdesign.id</p></div></div>
+                        <div class="flex gap-6"><div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm"><i data-lucide="clock"></i></div><div><h4 class="font-bold text-slate-900 mb-1">Jam Operasional</h4><p class="text-slate-500 text-sm">Senin - Jumat: 09:00 - 18:00<br>Sabtu: 09:00 - 15:00<br>Minggu & Libur: Tutup</p></div></div>
                     </div>
                 </div>
                 <div class="rounded-[3rem] overflow-hidden shadow-2xl h-full min-h-[400px] relative border-8 border-white">
-                    <!-- Placeholder Map -->
                     <div class="absolute inset-0 bg-slate-200 flex flex-col items-center justify-center text-center p-8">
                         <i data-lucide="map" class="w-12 h-12 text-slate-400 mb-4"></i>
-                        <p class="font-bold text-slate-500">Google Maps Integration</p>
-                        <p class="text-slate-400 text-sm">Klik untuk melihat rute ke workshop kami</p>
+                        <p class="font-bold text-slate-500">Google Maps</p>
                         <a href="https://maps.google.com" target="_blank" class="mt-6 px-8 py-3 bg-white text-slate-900 rounded-full font-bold shadow-lg hover:bg-blue-600 hover:text-white transition">Buka Peta</a>
                     </div>
                 </div>
@@ -477,7 +368,7 @@
         </div>
     </main>
 
-    <!-- Global Contact Form (Shared across pages) -->
+    <!-- Global Contact Form -->
     <section id="contact-form" class="py-32 px-6 bg-slate-900 overflow-hidden relative">
         <div class="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 blur-[150px] -z-0"></div>
         <div class="max-w-7xl mx-auto relative z-10">
@@ -486,13 +377,8 @@
                     <h2 class="text-5xl font-black text-white mb-8 leading-tight">Kirimkan <br>Pesan Anda</h2>
                     <p class="text-slate-400 text-lg mb-12">Punya pertanyaan spesifik atau proyek khusus? Isi formulir di samping dan kami akan menghubungi Anda sesegera mungkin.</p>
                     <div class="flex items-center gap-6">
-                        <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                            <i data-lucide="headset"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Layanan Pelanggan</p>
-                            <p class="text-xl font-bold text-white">Online 24/7 via Website</p>
-                        </div>
+                        <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20"><i data-lucide="headset"></i></div>
+                        <div><p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Layanan Pelanggan</p><p class="text-xl font-bold text-white">Online 24/7 via Website</p></div>
                     </div>
                 </div>
                 <div class="bg-white p-10 md:p-14 rounded-[3.5rem] shadow-2xl">
@@ -523,23 +409,14 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- FAQ -->
     <section class="py-24 bg-white px-6">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl font-black text-center mb-16">Pertanyaan Umum</h2>
             <div class="space-y-6">
-                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                    <h4 class="font-bold mb-2">Apakah bisa pesan satuan?</h4>
-                    <p class="text-slate-500 text-sm">Tentu bisa! Untuk Sablon DTF, kami melayani pesanan tanpa minimal order.</p>
-                </div>
-                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                    <h4 class="font-bold mb-2">Berapa lama proses produksinya?</h4>
-                    <p class="text-slate-500 text-sm">Standar kami adalah 1-3 hari untuk satuan, dan 5-10 hari untuk jumlah besar. Tersedia layanan kilat (sameday) dengan biaya tambahan.</p>
-                </div>
-                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                    <h4 class="font-bold mb-2">Apakah desain dibantu jika belum punya?</h4>
-                    <p class="text-slate-500 text-sm">Ya, kami memberikan layanan setting desain gratis untuk penempatan logo dan teks sederhana. Untuk desain rumit dari nol, dikenakan biaya jasa desain.</p>
-                </div>
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100"><h4 class="font-bold mb-2">Apakah bisa pesan satuan?</h4><p class="text-slate-500 text-sm">Tentu bisa! Untuk Sablon DTF, kami melayani pesanan tanpa minimal order.</p></div>
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100"><h4 class="font-bold mb-2">Berapa lama proses produksinya?</h4><p class="text-slate-500 text-sm">Standar kami adalah 1-3 hari untuk satuan, dan 5-10 hari untuk jumlah besar. Tersedia layanan kilat (sameday) dengan biaya tambahan.</p></div>
+                <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100"><h4 class="font-bold mb-2">Apakah desain dibantu jika belum punya?</h4><p class="text-slate-500 text-sm">Ya, kami memberikan layanan setting desain gratis untuk penempatan logo dan teks sederhana.</p></div>
             </div>
         </div>
     </section>
@@ -549,17 +426,12 @@
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-4 gap-12 mb-16">
                 <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <i data-lucide="zap" class="text-white w-4 h-4"></i>
-                        </div>
-                        <span class="text-2xl font-black tracking-tighter">MSGDESIGN</span>
-                    </div>
-                    <p class="text-slate-400 max-w-sm mb-6">Workshop percetakan berbasis di Jakarta yang mengedepankan kualitas hasil cetak dan kepuasan pelanggan. Solusi tepat untuk branding personal maupun perusahaan.</p>
+                    <div class="flex items-center gap-2 mb-6"><div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"><i data-lucide="zap" class="text-white w-4 h-4"></i></div><span class="text-2xl font-black tracking-tighter">MSGDESIGN</span></div>
+                    <p class="text-slate-400 max-w-sm mb-6">Workshop percetakan di Purwodadi yang mengedepankan kualitas hasil cetak dan kepuasan pelanggan.</p>
                     <div class="flex gap-4">
-                        <a href="https://instagram.com/msgdesign.id" target="_blank" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                        <a href="https://facebook.com/msgdesign.id" target="_blank" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                        <a href="https://tiktok.com/@msgdesign.id" target="_blank" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition"><i data-lucide="music-2" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition"><i data-lucide="music-2" class="w-5 h-5"></i></a>
                     </div>
                 </div>
                 <div>
@@ -576,87 +448,95 @@
                     <ul class="space-y-2 text-sm text-slate-500 font-medium">
                         <li>Senin - Jumat: 09.00 - 18.00</li>
                         <li>Sabtu: 09.00 - 15.00</li>
-                        <li>Minggu: Libur Produksi (Open Chat)</li>
+                        <li>Minggu: Libur (Open Chat)</li>
                     </ul>
                 </div>
             </div>
             <div class="pt-8 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
                 <p class="text-slate-400 text-xs font-bold tracking-widest">&copy; 2024 MSGDESIGN INDONESIA. ALL RIGHTS RESERVED.</p>
-                <div class="flex gap-6 text-xs font-bold text-slate-400">
-                    <a href="#" class="hover:text-slate-900">Kebijakan Privasi</a>
-                    <a href="#" class="hover:text-slate-900">Syarat & Ketentuan</a>
-                </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Initialize Icons
         lucide.createIcons();
 
-        // Page Switching Logic
         function showPage(pageId) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Close mobile menu if open
             document.getElementById('mobile-menu').classList.add('hidden');
         }
 
-        // Smooth Scroll to Section
         function scrollToSection(sectionId) {
-            // First ensure we are on Home page
             showPage('home');
-            
             setTimeout(() => {
                 const el = document.getElementById(sectionId);
                 const offset = 100;
-                const bodyRect = document.body.getBoundingClientRect().top;
-                const elementRect = el.getBoundingClientRect().top;
-                const elementPosition = elementRect - bodyRect;
-                const offsetPosition = elementPosition - offset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+                const pos = el.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: pos, behavior: 'smooth' });
             }, 100);
         }
 
-        // WhatsApp Form Submission
+        // ===== HERO BACKGROUND UPLOAD =====
+        const bgInput = document.getElementById('bgFileInput');
+        const heroSection = document.getElementById('heroSection');
+        const indicator = document.getElementById('uploadIndicator');
+
+        bgInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('File harus berupa gambar (JPG, PNG, WEBP, dll)');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const imgUrl = ev.target.result;
+
+                // Apply new background with overlay
+                heroSection.style.backgroundImage = `linear-gradient(rgba(15,23,42,0.75), rgba(15,23,42,0.85)), url('${imgUrl}')`;
+                heroSection.style.backgroundSize = 'cover';
+                heroSection.style.backgroundPosition = 'center';
+
+                // Show success indicator
+                indicator.style.display = 'flex';
+                lucide.createIcons();
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 3000);
+            };
+            reader.readAsDataURL(file);
+
+            // Reset input so same file can be re-uploaded
+            bgInput.value = '';
+        });
+
+        // WhatsApp Form
         document.getElementById('waForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('custName').value;
             const service = document.getElementById('custService').value;
-            const message = document.getElementById('custMsg').value;
-            
-            const waNumber = "6281234567890"; // GANTI NOMOR ADMIN ANDA
-            const text = `*ORDER BARU DARI WEBSITE MSGDESIGN*\n--------------------------\n*Nama Client:* ${name}\n*Layanan:* ${service}\n*Pesan:* ${message}\n--------------------------\nMohon dibantu ya Admin. Terima kasih!`;
-            
+            const msg = document.getElementById('custMsg').value;
+            const waNumber = "6281234567890";
+            const text = `*ORDER BARU DARI WEBSITE MSGDESIGN*\n--------------------------\n*Nama Client:* ${name}\n*Layanan:* ${service}\n*Pesan:* ${msg}\n--------------------------\nMohon dibantu ya Admin. Terima kasih!`;
             window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`, '_blank');
         });
 
-        // Mobile Menu Toggle
+        // Mobile Menu
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // Sticky Nav Change Effect
+        // Sticky Nav
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.classList.add('shadow-xl');
-                nav.style.height = '70px';
-            } else {
-                nav.classList.remove('shadow-xl');
-                nav.style.height = '80px';
-            }
+            if (window.scrollY > 100) { nav.classList.add('shadow-xl'); nav.style.height = '70px'; }
+            else { nav.classList.remove('shadow-xl'); nav.style.height = '80px'; }
         });
     </script>
 </body>
-</html>
-
-```
+                        </html>
